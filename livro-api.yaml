@@ -1,0 +1,154 @@
+openapi: 3.0.1
+info:
+  title: Serviço de Livros
+  description: Esta é a descrição de API do nosso serviço de registro de livros.
+  version: "1.0"
+tags:
+- name: livro
+  description: Everything about your livros
+paths:
+  /livro:
+    get:
+      tags:
+      - livro
+      summary: Listar todos os livros
+      description: Retorna a lista de livros do sistema
+      operationId: listar_livros
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    codigo:
+                      type: string
+                    titulo:
+                      type: string
+                    autor:
+                      type: string
+                    n_paginas:
+                      type: integer
+        400:
+          description: Requisição inválida
+          content: {}
+    post:
+      tags:
+      - livro
+      summary: Cadastrar um novo livro
+      operationId: criar_livro
+      requestBody:
+        description: Objeto que representa o livro a ser inserido
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                codigo:
+                  type: string
+                titulo:
+                  type: string
+                autor:
+                  type: string
+                n_paginas:
+                  type: string
+        required: true
+      responses:
+        405:
+          description: Entrada inválida
+          content: {}
+      x-codegen-request-body-name: body
+  /livro/{codigo}:
+    get:
+      tags:
+      - livro
+      summary: Buscar livro por código
+      description: Retorna o livro pelo código
+      operationId: buscar_por_codigo
+      parameters:
+      - name: codigo
+        in: path
+        description: Código do livro a ser retornado
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  codigo:
+                    type: string
+                  titulo:
+                    type: string
+                  autor:
+                    type: string
+                  n_paginas:
+                    type: integer
+        400:
+          description: Código inválido
+          content: {}
+        404:
+          description: Livro não encontrado
+          content: {}
+    put:
+      tags:
+      - livro
+      summary: Atualiza os dados de um livro
+      description: Atualiza os dados de um livro pelo código
+      operationId: atualizar_livro
+      parameters:
+      - name: codigo
+        in: path
+        description: Código do livro a ser atualizado
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Objeto que representa o livro a ser atualizado
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                codigo:
+                  type: string
+                titulo:
+                  type: string
+                autor:
+                  type: string
+                n_paginas:
+                  type: string
+        required: true
+      responses:
+        405:
+          description: Invalid input
+          content: {}
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+      - livro
+      summary: Exclui um livro
+      description: Apaga um livro pelo código
+      operationId: remove_livro
+      parameters:
+      - name: codigo
+        in: path
+        description: Código do livro a ser removido
+        required: true
+        schema:
+          type: integer
+      responses:
+        400:
+          description: Código inválido
+          content: {}
+        404:
+          description: Livro não encontrado
+          content: {}
